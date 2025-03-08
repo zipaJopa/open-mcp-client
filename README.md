@@ -26,7 +26,21 @@ OPENAI_API_KEY=sk-...
 LANGSMITH_API_KEY=lsv2_...
 ```
 
-Then just start the UI and agent, they'll both start and connect to each other:
+## Development
+
+For development, we recommend running the frontend and agent separately in different terminals to better see errors and logs:
+
+```bash
+# Terminal 1 - Frontend
+pnpm run dev-frontend
+
+# Terminal 2 - Agent
+pnpm run dev-agent
+```
+
+This approach makes it easier to spot and debug issues in either the frontend or agent components.
+
+Alternatively, you can run both services together with a single command:
 
 ```bash
 pnpm run dev
