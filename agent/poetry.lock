@@ -1105,6 +1105,21 @@ tenacity = ">=8.1.0,<8.4.0 || >8.4.0,<10.0.0"
 typing-extensions = ">=4.7"
 
 [[package]]
+name = "langchain-mcp-adapters"
+version = "0.0.3"
+description = "Make Anthropic Model Context Protocol (MCP) tools compatible with LangChain and LangGraph agents."
+optional = false
+python-versions = ">=3.10"
+files = [
+    {file = "langchain_mcp_adapters-0.0.3-py3-none-any.whl", hash = "sha256:c8d987878d76beb14f37c77391db9717719ce7c5d749536b53bb4afd68d11a7d"},
+    {file = "langchain_mcp_adapters-0.0.3.tar.gz", hash = "sha256:08dd2e833ed7f7e49130bcb3cfdaae0fafbbc0083e9f77ba3fb85eedca64c61a"},
+]
+
+[package.dependencies]
+langchain-core = ">=0.3.36"
+mcp = ">=1.2.1"
+
+[[package]]
 name = "langchain-openai"
 version = "0.2.14"
 description = "An integration package connecting OpenAI and LangChain"
@@ -1289,6 +1304,31 @@ packaging = ">=17.0"
 dev = ["marshmallow[tests]", "pre-commit (>=3.5,<5.0)", "tox"]
 docs = ["autodocsumm (==0.2.14)", "furo (==2024.8.6)", "sphinx (==8.1.3)", "sphinx-copybutton (==0.5.2)", "sphinx-issues (==5.0.0)", "sphinxext-opengraph (==0.9.1)"]
 tests = ["pytest", "simplejson"]
+
+[[package]]
+name = "mcp"
+version = "1.3.0"
+description = "Model Context Protocol SDK"
+optional = false
+python-versions = ">=3.10"
+files = [
+    {file = "mcp-1.3.0-py3-none-any.whl", hash = "sha256:2829d67ce339a249f803f22eba5e90385eafcac45c94b00cab6cef7e8f217211"},
+    {file = "mcp-1.3.0.tar.gz", hash = "sha256:f409ae4482ce9d53e7ac03f3f7808bcab735bdfc0fba937453782efb43882d45"},
+]
+
+[package.dependencies]
+anyio = ">=4.5"
+httpx = ">=0.27"
+httpx-sse = ">=0.4"
+pydantic = ">=2.7.2,<3.0.0"
+pydantic-settings = ">=2.5.2"
+sse-starlette = ">=1.6.1"
+starlette = ">=0.27"
+uvicorn = ">=0.23.1"
+
+[package.extras]
+cli = ["python-dotenv (>=1.0.0)", "typer (>=0.12.4)"]
+rich = ["rich (>=13.9.4)"]
 
 [[package]]
 name = "msgpack"
@@ -2787,4 +2827,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.10,<3.13"
-content-hash = "4f6bf6a18320dec110ef84a51de250aeba91928f2c7cf4d0810144002dff1644"
+content-hash = "92b1b9cb4c74e47e399152620f87430485069320ae5ed0ccf1d970333ebe8caf"
