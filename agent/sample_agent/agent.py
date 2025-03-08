@@ -14,7 +14,7 @@ def create_mcp_graph():
     from langchain_mcp_adapters.tools import load_mcp_tools
     
     # Path to your math server
-    MATH_SERVER_PATH = "/path/to/math_server.py"
+    MATH_SERVER_PATH = "./math_server.py"
     
     # Create the model
     model = ChatOpenAI(model="gpt-4o")
