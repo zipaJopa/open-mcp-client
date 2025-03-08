@@ -11,9 +11,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@copilotkit/react-core": "^1.5.20",
-    "@copilotkit/react-ui": "^1.5.20",
-    "@copilotkit/runtime": "^1.5.20",
+    "@copilotkit/react-core": "^1.6.0",
+    "@copilotkit/react-ui": "^1.6.0",
+    "@copilotkit/runtime": "^1.6.0",
     "class-validator": "^0.14.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
