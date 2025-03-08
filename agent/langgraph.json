@@ -1,9 +1,9 @@
 {
-  "node_version": "20",
+  "python_version": "3.12",
   "dockerfile_lines": [],
   "dependencies": ["."],
   "graphs": {
-    "sample_agent": "./src/agent.ts:graph"
+    "sample_agent": "./sample_agent/agent.py:graph"
   },
   "env": ".env"
 }
