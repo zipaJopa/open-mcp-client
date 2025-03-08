@@ -1,5 +1,3 @@
-import { ReactFlow, Controls, Background } from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
 import { CopilotSidebar } from "@copilotkit/react-ui";
 
 export default function Home() {
