@@ -8,6 +8,7 @@ export default function Home() {
       {/* Client component that sets up the Copilot action handler */}
       <CopilotActionHandler />
       
+      {/* Customize the default primary color used by CopilotKit components */}
       <div
         style={
           {
