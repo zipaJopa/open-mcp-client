@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useCoAgent } from "@copilotkit/react-core";
 import { ExampleConfigs } from "./ExampleConfigs";
+import { useLocalStorage, SaveStatus } from "../hooks/useLocalStorage";
 import {
   PlusCircle,
   Trash2,
@@ -36,11 +37,21 @@ interface AgentState {
   mcp_config: Record<string, ServerConfig>;
 }
 
+// Local storage key for saving agent state
+const STORAGE_KEY = 'mcp-agent-state';
+
 export function MCPConfigForm() {
+  // Use our localStorage hook for persistent storage
+  const [savedConfigs, setSavedConfigs, saveStatus] = useLocalStorage<Record<string, ServerConfig>>(
+    STORAGE_KEY,
+    {}
+  );
+  
+  // Initialize agent state with the data from localStorage
   const { state: agentState, setState: setAgentState } = useCoAgent<AgentState>({
     name: "sample_agent",
     initialState: {
-      mcp_config: {},
+      mcp_config: savedConfigs,
     },
   });
   
@@ -50,6 +61,7 @@ export function MCPConfigForm() {
   // Simple setter wrapper for configs
   const setConfigs = (newConfigs: Record<string, ServerConfig>) => {
     setAgentState({ ...agentState, mcp_config: newConfigs });
+    setSavedConfigs(newConfigs);
   };
   
   const [serverName, setServerName] = useState("");
@@ -58,9 +70,6 @@ export function MCPConfigForm() {
   const [args, setArgs] = useState("");
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
-  const [saveStatus, setSaveStatus] = useState<
-    "idle" | "saving" | "success" | "error"
-  >("idle");
   const [showAddServerForm, setShowAddServerForm] = useState(false);
   const [showExampleConfigs, setShowExampleConfigs] = useState(false);
 
@@ -147,9 +156,29 @@ export function MCPConfigForm() {
           <h1 className="text-5xl font-semibold">chat-mcp-langgraph</h1>
         </div>
         <div className="flex justify-between items-center mt-4">
-          <p className="text-sm text-gray-600">
-            Manage and configure your MPC servers
-          </p>
+          <div className="flex items-center">
+            <p className="text-sm text-gray-600 mr-3">
+              Manage and configure your MPC servers
+            </p>
+            {saveStatus === 'saving' && (
+              <span className="text-xs text-yellow-600 flex items-center">
+                <Save className="w-3 h-3 mr-1 animate-pulse" />
+                Saving...
+              </span>
+            )}
+            {saveStatus === 'success' && (
+              <span className="text-xs text-green-600 flex items-center">
+                <Save className="w-3 h-3 mr-1" />
+                Saved to local storage
+              </span>
+            )}
+            {saveStatus === 'error' && (
+              <span className="text-xs text-red-600 flex items-center">
+                <X className="w-3 h-3 mr-1" />
+                Failed to save
+              </span>
+            )}
+          </div>
           <button
             onClick={() => setShowAddServerForm(true)}
             className="px-3 py-1.5 bg-gray-800 text-white rounded-md text-sm font-medium hover:bg-gray-700 flex items-center gap-1"
