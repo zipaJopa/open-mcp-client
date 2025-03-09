@@ -19,7 +19,9 @@ export default function Home() {
         className="fixed top-0 right-0 h-full w-[30vw] border-l bg-white shadow-md"
         style={
           {
-            "--copilot-kit-primary-color": "#4A4A4A",
+            // Configure CopilotKit Chat UI via CSS variables
+            // For more customization options, see https://docs.copilotkit.ai/guides/custom-look-and-feel
+            "--copilot-kit-primary-color": "#4F4F4F", // Dark gray
           } as CopilotKitCSSProperties
         }
       >

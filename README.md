@@ -50,3 +50,11 @@ pnpm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+
+## Architecture
+
+The code is factored into 2 parts:
+
+1. The `/agent` folder: A LangGraph agent that connects to MCP servers and calls their tools
+
+2. The `/app` folder: a frontend application that uses CopilotKit for UI and state synchronization.
