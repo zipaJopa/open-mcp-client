@@ -56,6 +56,8 @@ async def chat_node(state: AgentState, config: RunnableConfig) -> Command[Litera
     """
     # Get MCP configuration from state, or use the default config if not provided
     mcp_config = state.get("mcp_config", DEFAULT_MCP_CONFIG)
+
+    print(f"mcp_config: {mcp_config}, default: {DEFAULT_MCP_CONFIG}")
     
     # Set up the MCP client and tools using the configuration from state
     async with MultiServerMCPClient(mcp_config) as mcp_client:
