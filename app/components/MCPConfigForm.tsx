@@ -3,14 +3,13 @@
 import { useState, useEffect } from "react";
 import { useCoAgent } from "@copilotkit/react-core";
 import { ExampleConfigs } from "./ExampleConfigs";
-import { useLocalStorage, SaveStatus } from "../hooks/useLocalStorage";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 import {
   PlusCircle,
   Trash2,
   Save,
   X,
   Server,
-  Cog,
   Terminal,
   Globe,
   ChevronDown,
@@ -250,7 +249,7 @@ export function MCPConfigForm() {
 
         {totalServers === 0 ? (
           <div className="text-gray-500 text-center py-10">
-            No servers configured. Click "Add Server" to get started.
+            No servers configured. Click &quot;Add Server&quot; to get started.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">

@@ -25,7 +25,7 @@ export const ToolCallRenderer: React.FC<ToolCallRendererProps> = ({
   const formatJSON = (obj: any) => {
     try {
       return JSON.stringify(obj, null, 2);
-    } catch (error) {
+    } catch {
       return String(obj);
     }
   };

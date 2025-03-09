@@ -1,12 +1,12 @@
 "use client";
 
 import {
-  Lightbulb,
   Calculator,
   Search,
   Database,
   ArrowRight,
 } from "lucide-react";
+import { JSX } from "react";
 
 type ExampleConfig = {
   name: string;
