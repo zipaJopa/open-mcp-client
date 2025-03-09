@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "MCP Client By CopilotKit",
-  description: "MCP Client",
+  title: "Open MCP Client",
+  description: "An open source MCP client built with CopilotKit 🪁",
 };
 
 export default function RootLayout({

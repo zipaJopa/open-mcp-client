@@ -152,12 +152,12 @@ export function MCPConfigForm() {
       <div className="mb-6">
         <div className="flex items-center mb-1">
           <Server className="h-6 w-6 mr-2 text-gray-700" />
-          <h1 className="text-5xl font-semibold">Chat-MCP-LangGraph-CopilotKit</h1>
+          <h1 className="text-5xl font-semibold">Open MCP Client</h1>
         </div>
         <div className="flex justify-between items-center mt-4">
           <div className="flex items-center">
             <p className="text-sm text-gray-600 mr-3">
-              Manage and configure your MPC servers
+              Manage and configure your MCP servers
             </p>
             <a 
               href="https://github.com/CopilotKit/mcp-client-langgraph" 
