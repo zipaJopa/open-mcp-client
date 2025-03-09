@@ -141,21 +141,23 @@ export function MCPConfigForm() {
   return (
     <div className="max-w-5xl mx-auto">
       {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <div className="flex items-center">
-          <Server className="h-5 w-5 mr-2" />
-          <h1 className="text-xl font-semibold">chat-mcp-langgraph</h1>
+      <div className="mb-6">
+        <div className="flex items-center mb-1">
+          <Server className="h-6 w-6 mr-2 text-gray-700" />
+          <h1 className="text-5xl font-semibold">chat-mcp-langgraph</h1>
         </div>
-        <p className="text-sm text-gray-600">
-          Manage and configure your MPC servers
-        </p>
-        <button
-          onClick={() => setShowAddServerForm(true)}
-          className="px-3 py-1.5 bg-gray-800 text-white rounded-md text-sm font-medium hover:bg-gray-700 flex items-center gap-1"
-        >
-          <PlusCircle className="h-4 w-4" />
-          Add Server
-        </button>
+        <div className="flex justify-between items-center mt-4">
+          <p className="text-sm text-gray-600">
+            Manage and configure your MPC servers
+          </p>
+          <button
+            onClick={() => setShowAddServerForm(true)}
+            className="px-3 py-1.5 bg-gray-800 text-white rounded-md text-sm font-medium hover:bg-gray-700 flex items-center gap-1"
+          >
+            <PlusCircle className="h-4 w-4" />
+            Add Server
+          </button>
+        </div>
       </div>
 
       {/* Server Statistics */}
