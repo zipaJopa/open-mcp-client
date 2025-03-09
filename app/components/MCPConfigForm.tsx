@@ -31,14 +31,27 @@ interface SSEConfig {
 
 type ServerConfig = StdioConfig | SSEConfig;
 
+// Define a generic type for our state
+interface AgentState {
+  mcp_config: Record<string, ServerConfig>;
+}
+
 export function MCPConfigForm() {
-  const { setState, state } = useCoAgent({
+  const { state, setState } = useCoAgent<AgentState>({
     name: "sample_agent",
     initialState: {
       mcp_config: {},
     },
   });
-  const [configs, setConfigs] = useState<Record<string, ServerConfig>>({});
+  
+  // Simple getter for configs
+  const configs = state?.mcp_config || {};
+  
+  // Simple setter wrapper for configs
+  const setConfigs = (newConfigs: Record<string, ServerConfig>) => {
+    setState({ ...state, mcp_config: newConfigs });
+  };
+  
   const [serverName, setServerName] = useState("");
   const [connectionType, setConnectionType] = useState<ConnectionType>("stdio");
   const [command, setCommand] = useState("");
@@ -60,12 +73,11 @@ export function MCPConfigForm() {
     (config) => config.transport === "sse"
   ).length;
 
-  // Fetch the current configuration when the component mounts
+  // Set loading to false when state is loaded
   useEffect(() => {
-    if (state && state.mcp_config) {
-      setConfigs(state.mcp_config as Record<string, ServerConfig>);
+    if (state) {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }, [state]);
 
   const handleExampleConfig = (exampleConfig: Record<string, ServerConfig>) => {
@@ -78,7 +90,7 @@ export function MCPConfigForm() {
       if (shouldReplace) {
         setConfigs(exampleConfig);
       } else {
-        setConfigs((prev) => ({ ...prev, ...exampleConfig }));
+        setConfigs({ ...configs, ...exampleConfig });
       }
     } else {
       setConfigs(exampleConfig);
@@ -103,10 +115,10 @@ export function MCPConfigForm() {
             transport: "sse" as const,
           };
 
-    setConfigs((prev) => ({
-      ...prev,
-      [serverName]: newConfig,
-    }));
+    setConfigs({ 
+      ...configs, 
+      [serverName]: newConfig 
+    });
 
     // Reset form
     setServerName("");
@@ -117,26 +129,9 @@ export function MCPConfigForm() {
   };
 
   const removeConfig = (name: string) => {
-    setConfigs((prev) => {
-      const newConfigs = { ...prev };
-      delete newConfigs[name];
-      return newConfigs;
-    });
-  };
-
-  const saveConfigs = async () => {
-    setSaveStatus("saving");
-    try {
-      await setState({
-        mcp_config: configs,
-      });
-      setSaveStatus("success");
-      setTimeout(() => setSaveStatus("idle"), 2000);
-    } catch (error) {
-      setSaveStatus("error");
-      setTimeout(() => setSaveStatus("idle"), 2000);
-      console.error("Error saving MCP configuration:", error);
-    }
+    const newConfigs = { ...configs };
+    delete newConfigs[name];
+    setConfigs(newConfigs);
   };
 
   if (isLoading) {
@@ -250,37 +245,6 @@ export function MCPConfigForm() {
                 </div>
               </div>
             ))}
-          </div>
-        )}
-
-        {totalServers > 0 && (
-          <div className="mt-6 flex justify-end">
-            <button
-              onClick={saveConfigs}
-              disabled={saveStatus === "saving"}
-              className={`px-4 py-2 rounded-md text-sm font-medium flex items-center gap-1 ${
-                saveStatus === "idle"
-                  ? "bg-gray-800 text-white hover:bg-gray-700"
-                  : saveStatus === "saving"
-                  ? "bg-gray-400 text-white cursor-not-allowed"
-                  : saveStatus === "success"
-                  ? "bg-gray-700 text-white"
-                  : "bg-red-600 text-white"
-              }`}
-            >
-              {saveStatus === "idle" ? (
-                <>
-                  <Save className="w-4 h-4" />
-                  Save Configuration
-                </>
-              ) : saveStatus === "saving" ? (
-                "Saving..."
-              ) : saveStatus === "success" ? (
-                "Saved!"
-              ) : (
-                "Error!"
-              )}
-            </button>
           </div>
         )}
 
