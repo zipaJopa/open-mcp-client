@@ -2,66 +2,59 @@
 
 import { useState, useEffect } from "react";
 import { useCoAgent } from "@copilotkit/react-core";
-import { ExampleConfigs } from "./ExampleConfigs";
-import { useLocalStorage, SaveStatus } from "../hooks/useLocalStorage";
+import { ConnectionType, ServerConfig, AgentState } from "./types";
 import {
   PlusCircle,
   Trash2,
-  Save,
   X,
   Server,
-  Cog,
   Terminal,
   Globe,
-  ChevronDown,
   ExternalLink,
 } from "lucide-react";
 
-type ConnectionType = "stdio" | "sse";
+const initialMcpConfigs: Record<string, ServerConfig> = {
+  "math": {
+    command: "python",
+    args: ["/Users/ataibarkai/LocalGit/CopilotKit-Other-Repos/mcp-client-langgraph/agent/math_server.py"],
+    transport: "stdio",
+  },
+  // "mcp-server": {
+  //   command: "python",
+  //   args: ["-m", "copilotkit.mcp", "server"],
+  //   transport: "stdio",
+  // },
+  // "mcp-server-sse": {
+  //   url: "http://localhost:8000/api/mcp",
+  //   transport: "sse",
+  // },
+};
 
-interface StdioConfig {
-  command: string;
-  args: string[];
-  transport: "stdio";
-}
-
-interface SSEConfig {
-  url: string;
-  transport: "sse";
-}
-
-type ServerConfig = StdioConfig | SSEConfig;
-
-// Define a generic type for our state
-interface AgentState {
-  mcp_config: Record<string, ServerConfig>;
-}
-
-// Local storage key for saving agent state
-const STORAGE_KEY = 'mcp-agent-state';
 
 export function MCPConfigForm() {
-  // Use our localStorage hook for persistent storage
-  const [savedConfigs, setSavedConfigs, saveStatus] = useLocalStorage<Record<string, ServerConfig>>(
-    STORAGE_KEY,
-    {}
-  );
+
+  // ------------------------
+  // Agent state management
+  // ----------------
   
   // Initialize agent state with the data from localStorage
   const { state: agentState, setState: setAgentState } = useCoAgent<AgentState>({
     name: "sample_agent",
     initialState: {
-      mcp_config: savedConfigs,
+      mcp_config: initialMcpConfigs,
     },
   });
-  
+
+  // ------------------------
+  // The rest of the component
+  // ------------------------
+
   // Simple getter for configs
   const configs = agentState?.mcp_config || {};
-  
+
   // Simple setter wrapper for configs
   const setConfigs = (newConfigs: Record<string, ServerConfig>) => {
     setAgentState({ ...agentState, mcp_config: newConfigs });
-    setSavedConfigs(newConfigs);
   };
   
   const [serverName, setServerName] = useState("");
@@ -71,7 +64,6 @@ export function MCPConfigForm() {
   const [url, setUrl] = useState("");
   const [isLoading, setIsLoading] = useState(true);
   const [showAddServerForm, setShowAddServerForm] = useState(false);
-  const [showExampleConfigs, setShowExampleConfigs] = useState(false);
 
   // Calculate server statistics
   const totalServers = Object.keys(configs).length;
@@ -88,26 +80,6 @@ export function MCPConfigForm() {
       setIsLoading(false);
     }
   }, [agentState]);
-
-  const handleExampleConfig = (exampleConfig: Record<string, ServerConfig>) => {
-    // Merge the example with existing configs or replace them based on user preference
-    if (Object.keys(configs).length > 0) {
-      const shouldReplace = window.confirm(
-        "Do you want to replace your current configuration with this example? Click 'OK' to replace, or 'Cancel' to merge."
-      );
-
-      if (shouldReplace) {
-        setConfigs(exampleConfig);
-      } else {
-        setConfigs({ ...configs, ...exampleConfig });
-      }
-    } else {
-      setConfigs(exampleConfig);
-    }
-
-    // Close the examples panel after selection
-    setShowExampleConfigs(false);
-  };
 
   const addConfig = () => {
     if (!serverName) return;
@@ -160,42 +132,6 @@ export function MCPConfigForm() {
             <p className="text-sm text-gray-600 mr-3">
               Manage and configure your MPC servers
             </p>
-            <a 
-              href="https://github.com/CopilotKit/mcp-client-langgraph" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:text-blue-800 flex items-center mr-4"
-            >
-              <span className="mr-1">GitHub Repo</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            </a>
-            <a 
-              href="https://docs.copilotkit.ai/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="text-sm text-blue-600 hover:text-blue-800 flex items-center"
-            >
-              <span className="mr-1">Documentation</span>
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-3.5 w-3.5"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-            </a>
-            {saveStatus === 'saving' && (
-              <span className="text-xs text-yellow-600 flex items-center">
-                <Save className="w-3 h-3 mr-1 animate-pulse" />
-                Saving...
-              </span>
-            )}
-            {saveStatus === 'success' && (
-              <span className="text-xs text-green-600 flex items-center">
-                <Save className="w-3 h-3 mr-1" />
-                Saved to local storage
-              </span>
-            )}
-            {saveStatus === 'error' && (
-              <span className="text-xs text-red-600 flex items-center">
-                <X className="w-3 h-3 mr-1" />
-                Failed to save
-              </span>
-            )}
           </div>
           <button
             onClick={() => setShowAddServerForm(true)}
@@ -221,27 +157,6 @@ export function MCPConfigForm() {
           <div className="text-sm text-gray-500">SSE Servers</div>
           <div className="text-3xl font-bold">{sseServers}</div>
         </div>
-      </div>
-
-      {/* Example Configs Button */}
-      <div className="mb-4">
-        <button
-          onClick={() => setShowExampleConfigs(!showExampleConfigs)}
-          className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-900"
-        >
-          <span>Example Configurations</span>
-          <ChevronDown
-            className={`w-4 h-4 ml-1 transition-transform ${
-              showExampleConfigs ? "rotate-180" : ""
-            }`}
-          />
-        </button>
-
-        {showExampleConfigs && (
-          <div className="mt-2">
-            <ExampleConfigs onSelectConfig={handleExampleConfig} />
-          </div>
-        )}
       </div>
 
       {/* Server List */}
