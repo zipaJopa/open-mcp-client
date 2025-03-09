@@ -49,17 +49,9 @@ async def chat_node(state: AgentState, config: RunnableConfig) -> Command[Litera
         model = ChatOpenAI(model="gpt-4o")
         react_agent = create_react_agent(model, mcp_tools)
         
-        # Get the language preference from state
-        language = state.get('language', 'english')
-        
-        # Create a messages array with a custom system message for the react agent
-        system_msg = SystemMessage(
-            content=f"You are a helpful assistant. Talk in {language}."
-        )
-        
         # Prepare messages for the react agent
         agent_input = {
-            "messages": [system_msg] + state["messages"]
+            "messages": state["messages"]
         }
         
         # Run the react agent subgraph with our input
