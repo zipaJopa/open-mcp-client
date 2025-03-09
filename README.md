@@ -1,3 +1,6 @@
+https://github.com/user-attachments/assets/f72e1f7d-3c84-4429-a465-23dff3d3bd63
+
+
 ## Getting Started
 
 First setup your environment variables:
