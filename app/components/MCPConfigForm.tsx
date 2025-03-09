@@ -37,7 +37,7 @@ interface AgentState {
 }
 
 export function MCPConfigForm() {
-  const { state, setState } = useCoAgent<AgentState>({
+  const { state: agentState, setState: setAgentState } = useCoAgent<AgentState>({
     name: "sample_agent",
     initialState: {
       mcp_config: {},
@@ -45,11 +45,11 @@ export function MCPConfigForm() {
   });
   
   // Simple getter for configs
-  const configs = state?.mcp_config || {};
+  const configs = agentState?.mcp_config || {};
   
   // Simple setter wrapper for configs
   const setConfigs = (newConfigs: Record<string, ServerConfig>) => {
-    setState({ ...state, mcp_config: newConfigs });
+    setAgentState({ ...agentState, mcp_config: newConfigs });
   };
   
   const [serverName, setServerName] = useState("");
@@ -75,10 +75,10 @@ export function MCPConfigForm() {
 
   // Set loading to false when state is loaded
   useEffect(() => {
-    if (state) {
+    if (agentState) {
       setIsLoading(false);
     }
-  }, [state]);
+  }, [agentState]);
 
   const handleExampleConfig = (exampleConfig: Record<string, ServerConfig>) => {
     // Merge the example with existing configs or replace them based on user preference
