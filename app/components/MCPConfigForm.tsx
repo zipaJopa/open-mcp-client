@@ -405,7 +405,7 @@ export function MCPConfigForm() {
             mcp.composio.dev
             <ExternalLink />
           </a>
-          and
+          and{" "}
           <a
             href="https://www.mcp.run/"
             target="_blank"
