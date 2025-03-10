@@ -28,6 +28,23 @@ interface AgentState {
 // Local storage key for saving agent state
 const STORAGE_KEY = "mcp-agent-state";
 
+const ExternalLink = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-3 h-3 ml-1"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={2}
+      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+    />
+  </svg>
+);
+
 export function MCPConfigForm() {
   // Use our localStorage hook for persistent storage
   const [savedConfigs, setSavedConfigs] = useLocalStorage<
@@ -386,29 +403,17 @@ export function MCPConfigForm() {
             className="text-gray-700 hover:text-gray-900 inline-flex items-center mr-2"
           >
             mcp.composio.dev
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="w-3 h-3 ml-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
-              />
-            </svg>
+            <ExternalLink />
           </a>
-          and 
+          and
           <a
             href="https://www.mcp.run/"
             target="_blank"
             rel="noopener noreferrer"
             className="text-gray-700 hover:text-gray-900 inline-flex items-center"
           >
-            mcp.run <ExternalLink className="w-3 h-3 ml-1" />
+            mcp.run
+            <ExternalLink />
           </a>
         </div>
       </div>
