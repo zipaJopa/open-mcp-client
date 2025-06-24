@@ -12,6 +12,7 @@ from langgraph.types import Command
 from copilotkit import CopilotKitState
 from langchain_mcp_adapters.client import MultiServerMCPClient
 from langgraph.prebuilt import create_react_agent
+from copilotkit.langgraph import (copilotkit_exit)
 import os
 
 # Define the connection type structures
@@ -77,8 +78,8 @@ async def chat_node(state: AgentState, config: RunnableConfig) -> Command[Litera
         agent_response = await react_agent.ainvoke(agent_input)
         
         # Update the state with the new messages
-        updated_messages = state["messages"] + agent_response.get("messages", [])
-        
+        updated_messages = state["messages"] + agent_response.get("messages", []) 
+        await copilotkit_exit(config)
         # End the graph with the updated messages
         return Command(
             goto=END,
